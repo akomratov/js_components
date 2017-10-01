@@ -1,13 +1,14 @@
-(function () {
-    'use strict'
+(function() {
+    'use strict';
 
+   /** Class representing a Form. */
     class Form {
-        constructor () {
-                
-        }
+      /**
+       * Create Form
+       */
+      constructor() {
+      }
     }
 
-    // export 
     window.Form = Form;
-
 })();

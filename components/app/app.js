@@ -2,9 +2,18 @@
     'use strict';
 
     const Menu = window.Menu;
-    class App {
-        constructor({ el }) {
+    const Form = window.Form;
 
+    /** Class representing an Application, which combines all
+      * the other artifacts.
+      */
+    class App {
+      /**
+       * Create Menu
+       * @param {Object} param contains HTML element
+       * @param {HTMLElement} param.el HTML element for new Menu
+       */
+        constructor({el}) {
             this.menu = new Menu({
                 el: el.querySelector('.js-menu'),
                 data: {
@@ -35,7 +44,7 @@
                                         title: 'Второй-второй-3'
                                     }
                                 ]
-                            },
+                            }
                         ]
                     },
                     {
@@ -47,6 +56,7 @@
                 ]
             });
 
+            this.form = new Form({el: el.querySelector('.js-menu')});
         }
     }
 

@@ -2,7 +2,7 @@
     'use strict';
 
 /** Class representing a Menu. */
-    class Menu {
+    class Menu extends AbstractControl {
       /**
        * Create Menu
        * @param {Object} param contains HTML element and Menu data
@@ -10,14 +10,19 @@
        * @param {Array} param.data Menu data
        */
         constructor({el, data}) {
-            this.$el = el;
-            this.data = data;
+          super({el: el, data: data});
 
-            this.$el = el;
-            this.$title = el.querySelector('.js-title');
-            this.$menuList = el.querySelector('.js-menu-list');
+          this.template = `<div class='menu menu__title'>{{title}}</div>
+                            <ul class='menu menu__list'>
+                              {{#each items}}
+                                <li value='{{@index}}'>{{this.title}}
+                                     <sup>x</sup></li>
+                              {{else}}
+                                <li>нет записей</li>
+                              {{/each}}
+                            </ul>`;
 
-            this.initEvents();
+          this.initEvents();
         }
 
         /**
@@ -30,13 +35,31 @@
         }
 
         /**
-         * Add Menu into DOM
+         * Remove menu item by index
+         * @param {number} ind index of menu item to be deleted
          */
-        render() {
-          this.$title.innerText = this.data.title;
-          this.renderItems(this.data.items, this.$menuList);
+        removeDataItem(ind) {
+          this.data.items.splice(ind, 1);
         }
 
+        /**
+         * Append new item into menu
+         * @param {Object} item new menu item to be added
+         */
+        appendItem(item) {
+          this.data.items.push(item);
+          this.render();
+        }
+
+        /**
+         * Add Menu into DOM
+         */
+         /*
+        render() {
+          //this.$title.innerText = this.data.title;
+          //this.renderItems(this.data.items, this.$menuList);
+        }
+*/
         /**
          * Render Menu items
          * @param {Array} items
@@ -52,32 +75,42 @@
          * Init event handlers
          */
         initEvents() {
-          this.$title.addEventListener('click',
-               this.toggleDisplayMenu.bind(this));
-          this.$menuList.addEventListener('click', this.removeItem.bind(this));
+          // this.$title.addEventListener('click',
+          //     this.toggleDisplayMenu.bind(this));
+          this.$el.addEventListener('click', this.toggleDisplayMenu.bind(this));
+          this.$el.addEventListener('click', this.removeItem.bind(this));
+          // this.$title.addEventListener('add_menu_item',
+          //                             this.appendItem.bind(this));
         }
 
         /**
          * Open / close menu
+         * @param {Event} ev DOM event
          */
-        toggleDisplayMenu() {
-          this.$el.classList.toggle('_open');
+        toggleDisplayMenu(ev) {
+          let currentItem = ev.target;
+
+          if (currentItem.tagName == 'DIV') {
+            this.$el.classList.toggle('_open');
+          }
         }
 
         /**
          * Remove menu item (e.g. on button "Remove" click)
-         * @param {Event} ev DOM event 
+         * @param {Event} ev DOM event
          */
         removeItem(ev) {
           let currentRemoveIcon = ev.target;
           let currentItem;
-          let currentList;
+          // let currentList;
 
           if (currentRemoveIcon.tagName == 'SUP') {
             // для поддержки в IE11-
             currentItem = currentRemoveIcon.closest('li');
-            currentList = currentItem.closest('ul');
-            currentList.removeChild(currentItem);
+            // currentList = currentItem.closest('ul');
+            this.removeDataItem(currentItem.getAttribute('value'));
+            // currentList.removeChild(currentItem);
+            this.render();
           }
         }
 

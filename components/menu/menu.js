@@ -26,61 +26,11 @@
         }
 
         /**
-         * Set menu data, which represents structure content
-         * @param {Object} data - Menu data
-         */
-        setData(data) {
-          this.data = data;
-          this.render();
-        }
-
-        /**
-         * Remove menu item by index
-         * @param {number} ind index of menu item to be deleted
-         */
-        removeDataItem(ind) {
-          this.data.items.splice(ind, 1);
-        }
-
-        /**
-         * Append new item into menu
-         * @param {Object} item new menu item to be added
-         */
-        appendItem(item) {
-          this.data.items.push(item);
-          this.render();
-        }
-
-        /**
-         * Add Menu into DOM
-         */
-         /*
-        render() {
-          //this.$title.innerText = this.data.title;
-          //this.renderItems(this.data.items, this.$menuList);
-        }
-*/
-        /**
-         * Render Menu items
-         * @param {Array} items
-         * @param {HTMLElement} container HTML Element to embed new items
-         */
-        renderItems(items, container) {
-          items.forEach((item) => {
-            this._addItem(item, container);
-          });
-        }
-
-        /**
          * Init event handlers
          */
         initEvents() {
-          // this.$title.addEventListener('click',
-          //     this.toggleDisplayMenu.bind(this));
           this.$el.addEventListener('click', this.toggleDisplayMenu.bind(this));
           this.$el.addEventListener('click', this.removeItem.bind(this));
-          // this.$title.addEventListener('add_menu_item',
-          //                             this.appendItem.bind(this));
         }
 
         /**
@@ -97,47 +47,21 @@
 
         /**
          * Remove menu item (e.g. on button "Remove" click)
-         * @param {Event} ev DOM event
+         * @param {Event} event DOM event
          */
-        removeItem(ev) {
-          let currentRemoveIcon = ev.target;
-          let currentItem;
-          // let currentList;
+        removeItem(event) {
+          const currentRemoveIcon = event.target;
 
           if (currentRemoveIcon.tagName == 'SUP') {
-            // для поддержки в IE11-
-            currentItem = currentRemoveIcon.closest('li');
-            // currentList = currentItem.closest('ul');
-            this.removeDataItem(currentItem.getAttribute('value'));
-            // currentList.removeChild(currentItem);
-            this.render();
+            const currentItem = currentRemoveIcon.closest('li');
+            const itemIndex = currentItem.getAttribute('value');
+            let ev = new CustomEvent('remove_menu_item', {
+              bubbles: true,
+              detail: {index: itemIndex}
+            });
+            this.$el.dispatchEvent(ev);
+            event.preventDefault();
           }
-        }
-
-        /**
-         * Add child HTML element into Menu's HTML element
-         * @param {Object} item Menu item
-         * @param {HTMLElement} container for new menu child element
-         * @private
-         */
-        _addItem(item, container) {
-          let itemText = item.title;
-          let ulEl = document.createElement('ul');
-          let liEl = document.createElement('li');
-          let spanEl = document.createElement('span');
-          let removeIcon = document.createElement('sup');
-
-          spanEl.textContent = itemText;
-          removeIcon.textContent = ' x';
-
-          liEl.append(spanEl, removeIcon);
-
-          if (item.items) {
-            liEl.append(ulEl);
-            this.renderItems(item.items, ulEl);
-          }
-
-          container.append(liEl);
         }
       }
 

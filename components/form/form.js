@@ -6,10 +6,11 @@
       /**
        * Create Form
        */
-       constructor({el}) {
-        super({el: el});
+       constructor({el, data}) {
+        super({el: el, data: data});
         this.template = `<form><label>Url</label>
-                           <input type="text" class="js-input"></input>
+                           <input type="text" class="js-input"
+                                  value="{{this.input}}"></input>
                            <input type="submit"></input>
                          </form>`;
         this._initEvents(el);
@@ -31,9 +32,10 @@
        */
       _onSubmit(event) {
         let val = this.$el.querySelector('input.js-input').value;
+        this.data.input = val;
         let ev = new CustomEvent('add_menu_item', {
           bubbles: true,
-          detail: {url: val}
+          detail: {title: val}
         });
         this.$el.dispatchEvent(ev);
         event.preventDefault();

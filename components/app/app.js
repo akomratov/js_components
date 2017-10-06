@@ -6,7 +6,10 @@
     const Controller = window.Controller;
 
     const store = {
-      menuData: {},
+      menuData: {
+          title: 'fdsgfds',
+          items: []
+      },
       itemInput: {}
     };
 
@@ -20,18 +23,16 @@
        * @param {HTMLElement} param.el HTML element for new Menu
        */
         constructor({el}) {
-            this.controller = new Controller(store);
-
             // Create Menu control
             this.menu = new Menu({
                 el: el.querySelector('.js-menu'),
-                data: store.menuData
+                data: store
             });
 
             // Create Form control
             this.form = new Form({
               el: el.querySelector('.js-form'),
-              data: store.itemInput
+              data: store
             });
 
             this.controls = [];
@@ -40,7 +41,7 @@
 
             this._initEvents(el);
 
-            this.controller.loadMenuData();
+            this.controller = new Controller(store, this.controls);
 
             // Run Rendering cycle
             setInterval(this.render.bind(this), 50);
@@ -64,8 +65,8 @@
           */
           _onAddMenuItem(event) {
             this.controller.addMenuItem(event.detail.title);
-            this.form.setOutdated();
-            this.menu.setOutdated();
+            // this.form.setOutdated();
+            // this.menu.setOutdated();
           }
 
           /**
@@ -75,7 +76,7 @@
            */
           _onRemoveMenuItem(event) {
             this.controller.removeMenuItem(event.detail.index);
-            this.menu.setOutdated();
+            // this.menu.setOutdated();
           }
 
           /**

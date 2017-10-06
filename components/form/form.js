@@ -8,9 +8,9 @@
        */
        constructor({el, data}) {
         super({el: el, data: data});
-        this.template = `<form><label>Url</label>
+        this.template = `<form><label>Site URL</label>
                            <input type="text" class="js-input"
-                                  value="{{this.input}}"></input>
+                                  value="{{this.itemInput.input}}"></input>
                            <input type="submit"></input>
                          </form>`;
         this._initEvents(el);

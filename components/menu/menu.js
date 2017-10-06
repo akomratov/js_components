@@ -12,9 +12,10 @@
         constructor({el, data}) {
           super({el: el, data: data});
 
-          this.template = `<div class='menu menu__title'>{{title}}</div>
+          this.template = `<div class='menu menu__title'>
+                                {{menuData.title}}</div>
                             <ul class='menu menu__list'>
-                              {{#each items}}
+                              {{#each menuData.items}}
                                 <li value='{{@index}}'>{{this.title}}
                                      <sup>x</sup></li>
                               {{else}}

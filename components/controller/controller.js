@@ -16,14 +16,21 @@
   class Controller {
     /** Create application controller
      * @param {Object} store Application data store
+     * @param {Array} controls Array of controls, which should be notified
+     * regarding change
      */
-    constructor(store) {
+    constructor(store, controls) {
+      this.httpService = new HttpService();
+
       this.store = store;
+      this.controls = controls;
       // set initial values
       this.store.menuData = menuData;
       this.store.itemInput = itemInput;
 
-      this.httpService = new HttpService();
+      this._updateView();
+
+      this.loadMenuData();
     }
 
     /**
@@ -34,6 +41,9 @@
       if (title !== '') {
         this.store.menuData.items.push({title: title});
         this.store.itemInput.input = '';
+        this.uploadMenuData(this.store.menuData);
+
+        this._updateView();
       }
     }
 
@@ -44,14 +54,55 @@
     removeMenuItem(index) {
       if (index >= 0 && index < this.store.menuData.items.length) {
         this.store.menuData.items.splice(index, 1);
+        this.uploadMenuData(this.store.menuData);
+
+        this._updateView();
       }
+    }
+
+    /**
+     * Mark controls to be rerendered
+     * @private
+     */
+    _updateView() {
+      this.controls.forEach((control) => {
+        control.setOutdated();
+      });
     }
 
     /**
      * Load Menu data via HTTP request
      */
     loadMenuData() {
+      const url = 'https://menudata-959fa.firebaseio.com/bookmarks/-Kvm18rMzHPN4oGBRRpU.json';
+      const self = this;
 
+      this.httpService.get(url)
+      .then((data) => {
+        self.store.menuData.title = data.title;
+        self.store.menuData.items = data.items;
+        self._updateView.bind(self)();
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+    }
+
+    /**
+     * Upload Menu data to backend system
+     * @param {Object} menu Menu data to be uploaded
+     */
+    uploadMenuData(menu) {
+      const url = 'https://menudata-959fa.firebaseio.com/bookmarks/-Kvm18rMzHPN4oGBRRpU.json';
+      const json = JSON.stringify(menu);
+
+      this.httpService.put(url, json)
+      .then((data) => {
+        console.log('PUT request sent successfully, received data', data);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
     }
   }
 

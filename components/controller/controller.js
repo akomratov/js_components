@@ -20,7 +20,7 @@
      * regarding change
      */
     constructor(store, controls) {
-      this.httpService = new HttpService();
+      this.httpService = HttpService;
 
       this.store = store;
       this.controls = controls;
@@ -77,7 +77,7 @@
       const url = 'https://menudata-959fa.firebaseio.com/bookmarks/-Kvm18rMzHPN4oGBRRpU.json';
       const self = this;
 
-      this.httpService.get(url)
+      this.httpService.request('GET', url)
       .then((data) => {
         self.store.menuData.title = data.title;
         self.store.menuData.items = data.items;
@@ -96,7 +96,7 @@
       const url = 'https://menudata-959fa.firebaseio.com/bookmarks/-Kvm18rMzHPN4oGBRRpU.json';
       const json = JSON.stringify(menu);
 
-      this.httpService.put(url, json)
+      this.httpService.request('PUT', url, true, json)
       .then((data) => {
         console.log('PUT request sent successfully, received data', data);
       })

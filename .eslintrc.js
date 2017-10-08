@@ -1,14 +1,10 @@
 module.exports = {
-    "extends": "google", // "airbnb",
-    "parserOptions": {
-      "ecmaVersion": 6
+    'extends': 'google',
+    'parserOptions': {
+        'ecmaVersion': 6,
+        'sourceType': 'module'
     },
-    "rules": {
-      "comma-dangle": [2, "never"]
+    'rules': {
+        'comma-dangle': [2, 'never']
     }
-    /*,
-    "env": {
-      "browser": true,
-      "es6": true
-    } */
 };

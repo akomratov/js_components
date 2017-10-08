@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "./node_modules/.bin/webpack",
     "lint": "./node_modules/.bin/eslint components/**/*.js",
     "serve": "./node_modules/.bin/static .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,8 +20,12 @@
   },
   "homepage": "https://github.com/iketari/components_1808_2130#readme",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
     "eslint": "^4.7.2",
     "eslint-config-google": "^0.9.1",
-    "node-static": "^0.7.10"
+    "node-static": "^0.7.10",
+    "webpack": "^3.6.0"
   }
 }

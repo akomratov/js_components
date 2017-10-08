@@ -7,23 +7,16 @@
         <h1>Панель закладок</h1>
         <h3>Реализация на классах ES6 с использованием Handlebars</h3>
 
-
         <div class="js-app">
             <div class="js-menu menu"></div>
             <div class="js-form"></div>
         </div>
 
-
-        <script src="libs/handlebars.js"></script>
-        <script src="components/abstract/abstract_control.js"></script>
-        <script src="components/service/http_service.js"></script>
-        <script src="components/controller/controller.js"></script>
-        <script src="components/form/form.js"></script>
-        <script src="components/menu/menu.js"></script>
-        <script src="components/app/app.js"></script>
+        <script src="vendors.js"></script>
+        <script src="bundle.js"></script>
 
         <script>
-            "use strict";
+            'use strict';
             new window.App({el: document.querySelector('.js-app')});
         </script>
     </body>
